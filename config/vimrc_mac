@@ -1,0 +1,155 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'vim-scripts/molokai'
+Plugin 'vim-scripts/DoxygenToolkit.vim'
+Plugin 'vim-scripts/cpp_cppcheck.vim'
+Plugin 'Valloric/YouCompleteMe'
+" plugin from http://vim-scripts.org/vim/scripts.html
+"Plugin 'L9'
+"Plugin 'DfrankUtil'
+"Plugin 'vimprj'
+"Plugin 'indexer.tar.gz'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Avoid a name conflict with L9
+"Plugin 'user/L9', {'name': 'newL9'}
+" 代码补全
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
+
+" 设置字符编码，防止中文乱码等问题
+set fileencoding=utf-8
+set fileencodings=utf-8,gb2312,gb18030,latin1
+set termencoding=utf-8
+set encoding=utf-8
+
+
+" 语法高亮
+syntax on
+
+" 背景
+if !has("gui_running")
+    set t_Co=256
+endif
+
+"colorscheme khaki 
+colorscheme molokai
+let g:molokai_original=1
+
+
+" 在64列处显示竖线
+set colorcolumn=64,80
+hi ColorColumn ctermbg=6*
+set nowrap
+
+
+" 显示行号
+set number
+" 检测文件类型
+"filetype on
+" 根据文件类型加载对应的插件
+"filetype plugin on
+"filetype plugin indent on
+" 设置各种缩进
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set cindent
+set autoindent
+" tab转换为空格
+set expandtab
+
+" 总是显示状态栏
+set laststatus=2
+" 高亮当前行/列
+set cursorline
+set cursorcolumn
+" 显示光标当前位置
+set ruler
+" 高亮显示搜索结果
+set hlsearch
+set ignorecase
+set smartcase
+set incsearch
+set ai
+set showcmd
+set wildmenu
+
+set list
+set listchars=tab:->,trail:-
+
+" 解决Mac OSX中delete键无效的问题
+set backspace=2
+" 设置按两次j键为esc
+inoremap jj <Esc>
+
+" 自动完成大括号
+imap { {<CR>}<Esc>kA<CR>
+
+" 美化状态栏
+let g:Powerline_colorscheme='solarized256'
+
+let g:DoxygenToolkit_authorName="zzq"
+let g:DoxygenToolkit_enhanced_color=1
+
+
+"设置插件 indexer 调用 ctags 的参数
+" 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+" 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
+"let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v  --fields=+iaSl --extra=+q"
+ 
+let g:cpp_cppcheck_options="--platform=unix64 --std=c99 --std=c++11"
+
+" YouCompleteMe
+" 补全功能在注释中也有效
+let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_strings=1
+" 自动加载.ycm_extra_conf.py文件，不再提示
+let g:ycm_confirm_extra_conf=0
+" 开启YCM tag补全引擎
+let g:ycm_collect_identifiers_from_tags_files=1
+" 从第一个输入字符就开始罗列匹配项
+"let g:ycm_min_num_of_chars_for_completion=0
+let g:ycm_auto_trigger=1
+" YCM相关快捷键
+nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+
+

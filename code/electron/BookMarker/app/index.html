@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+default-src 'self';
+script-src 'self' 'unsafe-inline'; connect-src *
+">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Bookmarker</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+    <h1>Book Marker</h1>
+
+    <dev class="error-message"></dev>
+
+    <section class="add-new-link">
+        <form class="new-link-form">
+            <input type="url" class="new-link-url" placeholder="URL" required>
+            <input type="submit" class="new-link-submit" value="Submit" disabled>
+        </form>
+    </section>
+
+    <section class="links"></section>
+
+    <section class="controls">
+        <button class="clear-storage">Clear Storage</button>
+    </section>
+
+    <script>
+        require('./renderer.js')
+    </script>
+</body>
+
+</html>

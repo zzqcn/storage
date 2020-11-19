@@ -1,0 +1,41 @@
+// zhaopeng, 2019.08.15
+
+perf, i5
+---------
+
+$./int2str
+---u16tostr----
+convert: 3
+str: 3|, 18         // APPFMT_CharToBuf('3', p);
+str: 3|, 25590      // APPFMT_U8ToBuf(g_u16StrMap, 3, p);
+---u16tostr----
+convert: 12345
+str: 12345|, 1332   // APPFMT_StrToBuf("12345", 5, p);
+str: 12345|, 26169  // APPFMT_U16ToBuf(g_u16StrMap, 12345, p);
+---int2hex---
+convert: 2147483647
+str: 0x7FFFFFFF, n: 8, 30429    // Int2Hex, 自写
+str: 0x7FFFFFFF, n: 8, 3231801  // Int2Hex2, sprintf
+
+
+perf, Xeon E5-2620v3
+---------------------
+
+$./int2str 
+---u16tostr----
+convert: 3
+str: 3|, 42             // APPFMT_CharToBuf('3', p);
+str: 3|, 34452          // APPFMT_U8ToBuf(g_u16StrMap, 3, p);
+---u16tostr----
+convert: 12345
+str: 12345|, 51588      // APPFMT_StrToBuf("12345", 5, p);
+str: 12345|, 17334      // APPFMT_ShortStrToBuf("12345", 5, p);
+str: 12345|, 34434      // APPFMT_U16ToBuf(g_u16StrMap, 12345, p);
+---int2hex---
+convert: 2147483647
+str: 0x7FFFFFFF, n: 8, 137394   // Int2Hex, 自写
+str: 0x7FFFFFFF, n: 8, 4120884  // sprintf
+---shortStr---
+convert: a1b2c3d
+str: a1b2c3d|, 68778    // APPFMT_StrToBuf("a1b2c3d", 7, p);
+str: a1b2c3d|, 34476    // APPFMT_ShortStrToBuf("a1b2c3d", 7, p);

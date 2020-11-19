@@ -1,0 +1,480 @@
+/*-
+ *   BSD LICENSE
+ *
+ *   Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+ *   All rights reserved.
+ *
+ *   Redistribution and use in source and binary forms, with or without
+ *   modification, are permitted provided that the following conditions
+ *   are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in
+ *       the documentation and/or other materials provided with the
+ *       distribution.
+ *     * Neither the name of Intel Corporation nor the names of its
+ *       contributors may be used to endorse or promote products derived
+ *       from this software without specific prior written permission.
+ *
+ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef _RTE_MEMCMP_X86_64_H_
+#define _RTE_MEMCMP_X86_64_H_
+
+/**
+ * @file
+ *
+ * Functions for SSE/AVX/AVX2 implementation of memcmp().
+ */
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
+#include <rte_config.h>
+#include <rte_vect.h>
+#include <rte_branch_prediction.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * Compare bytes between two locations. The locations must not overlap.
+ *
+ * @note This is implemented as a macro, so it's address should not be taken
+ * and care is needed as parameter expressions may be evaluated multiple times.
+ *
+ * @param src_1
+ *   Pointer to the first source of the data.
+ * @param src_2
+ *   Pointer to the second source of the data.
+ * @param n
+ *   Number of bytes to compare.
+ * @return
+ *   true if equal otherwise false.
+ */
+static inline bool
+rte_memcmp(const void *src_1, const void *src,
+		size_t n) __attribute__((always_inline));
+
+#ifdef RTE_MACHINE_CPUFLAG_AVX2
+
+/**
+ * AVX2 implementation below
+ */
+
+/**
+ * Compare 16 bytes between two locations.
+ * locations should not overlap.
+ */
+static inline bool
+rte_cmp16(const uint8_t *src_1, const uint8_t *src_2)
+{
+	__m128i xmm0;
+	__m128i xmm1;
+	__m128i vcmp;
+	uint32_t vmask;
+
+	xmm0 = _mm_loadu_si128((const __m128i *)src_1);
+	xmm1 = _mm_loadu_si128((const __m128i *)src_2);
+
+	vcmp = _mm_cmpeq_epi16(xmm0, xmm1);
+	vmask = _mm_movemask_epi8(vcmp);
+	return (!(vmask == 0xffffU));
+}
+
+/**
+ * Compare 32 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp32(const uint8_t *src_1, const uint8_t *src_2)
+{
+	__m256i xmm0;
+	__m256i xmm1;
+	__m256i vcmp;
+	uint64_t vmask;
+
+	xmm0 = _mm256_loadu_si256((const __m256i *)src_1);
+	xmm1 = _mm256_loadu_si256((const __m256i *)src_2);
+
+	vcmp = _mm256_cmpeq_epi32(xmm0, xmm1);
+	vmask = _mm256_movemask_epi8(vcmp);
+	return (!(vmask == 0xffffffffU));
+}
+
+/**
+ * Compare 64 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp64(const uint8_t *src_1, const uint8_t *src_2)
+{
+	bool ret;
+
+	ret = rte_cmp32(src_1 + 0 * 32, src_2 + 0 * 32);
+
+	if (likely(ret == 0))
+		ret = rte_cmp32(src_1 + 1 * 32, src_2 + 1 * 32);
+
+	return ret;
+}
+
+/**
+ * Compare 128 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp128(const uint8_t *src_1, const uint8_t *src_2)
+{
+	bool ret;
+
+	ret = rte_cmp32(src_1 + 0 * 32, src_2 + 0 * 32);
+
+	if (likely(ret == 0))
+		ret = rte_cmp32(src_1 + 1 * 32, src_2 + 1 * 32);
+
+	if (likely(ret == 0))
+		ret = rte_cmp32(src_1 + 2 * 32, src_2 + 2 * 32);
+
+	if (likely(ret == 0))
+		ret = rte_cmp32(src_1 + 3 * 32, src_2 + 3 * 32);
+
+	return ret;
+}
+
+static inline bool
+rte_memcmp_remainder(const void *_src_1, const void *_src_2, size_t n)
+{
+	uintptr_t src_1u = (uintptr_t)_src_1;
+	uintptr_t src_2u = (uintptr_t)_src_2;
+
+	bool ret_1 = 1, ret_2 = 1, ret_4 = 1, ret_8 = 1;
+
+	/**
+	 * Compare less than 16 bytes
+	 */
+	if (n & 0x01) {
+		ret_1 = (*(uint8_t *)src_1u ==
+				*(const uint8_t *)src_2u);
+		src_1u = (uintptr_t)((const uint8_t *)src_1u + 1);
+		src_2u = (uintptr_t)((const uint8_t *)src_2u + 1);
+	}
+	if (n & 0x02) {
+		ret_2 = (*(uint16_t *)src_1u ==
+				*(const uint16_t *)src_2u);
+		src_1u = (uintptr_t)((const uint16_t *)src_1u + 1);
+		src_2u = (uintptr_t)((const uint16_t *)src_2u + 1);
+	}
+	if (n & 0x04) {
+		ret_4 = (*(uint32_t *)src_1u ==
+				*(const uint32_t *)src_2u);
+		src_1u = (uintptr_t)((const uint32_t *)src_1u + 1);
+		src_2u = (uintptr_t)((const uint32_t *)src_2u + 1);
+	}
+	if (n & 0x08) {
+		ret_8 = (*(uint64_t *)src_1u ==
+				*(const uint64_t *)src_2u);
+	}
+	return (!(ret_1 && ret_2 && ret_4 && ret_8));
+}
+
+static inline bool
+rte_memcmp(const void *_src_1, const void *_src_2, size_t n)
+{
+	const uint8_t *src_1 = (const uint8_t *)_src_1;
+	const uint8_t *src_2 = (const uint8_t *)_src_2;
+	bool ret;
+
+	/**
+	 * Compare less than 16 bytes
+	 */
+	if (n < 16)
+		return rte_memcmp_remainder(_src_1, _src_2, n);
+
+	/**
+	 * Fast way when compare size exceeds 16 bytes
+	 */
+	if (n <= 32) {
+		if (likely(n & 0x20))
+			ret = rte_cmp32(src_1, src_2);
+		else {
+			ret = rte_cmp16(src_1 - 16 + n, src_2 - 16 + n);
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 16 + n,
+						src_2 - 16 + n, n - 16);
+		}
+		return ret;
+	}
+
+	if (n <= 48) {
+		if (likely(n & 0x30)) {
+			ret = rte_cmp32(src_1, src_2);
+			if (likely(ret == 0))
+				ret = rte_cmp16(src_1 - 32 + n, src_2 - 32 + n);
+		} else {
+			ret = rte_cmp32(src_1, src_2);
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 32 + n,
+						src_2 - 32 + n, n - 32);
+		}
+		return ret;
+	}
+
+	if (n <= 64) {
+		if (likely(n & 0x40))
+			ret = rte_cmp64(src_1, src_2);
+		else {
+			ret = rte_cmp32(src_1 - 32 + n, src_2 - 32 + n);
+			if (likely(ret == 0))
+				ret = rte_cmp16(src_1 - 32 + n,
+						src_2 - 32 + n);
+
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 48 + n,
+						src_2 - 48 + n, n - 48);
+		}
+		return ret;
+	}
+
+	if (n <= 128) {
+		if (likely(n & 0x80))
+			ret = rte_cmp128(src_1, src_2);
+		else {
+			ret = rte_cmp64(src_1, src_2);
+			if (likely(ret == 0))
+				ret = rte_cmp32(src_1 - 64 + n, src_2 - 64 + n);
+
+			if (likely(ret == 0))
+				ret = rte_cmp16(src_1 - 96 + n, src_2 - 96 + n);
+
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 112 + n,
+						src_2 - 112 + n, n - 112);
+		}
+		return ret;
+	}
+
+	return 0;
+}
+
+#else /* RTE_MACHINE_CPUFLAG_AVX2 */
+
+/**
+ * SSE & AVX implementation below
+ */
+
+/**
+ * Compare 16 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp16(const uint8_t *src_1, const uint8_t *src_2)
+{
+	__m128i xmm0;
+	__m128i xmm1;
+	__m128i vcmp;
+	uint32_t vmask;
+
+	xmm0 = _mm_loadu_si128((const __m128i *)src_1);
+	xmm1 = _mm_loadu_si128((const __m128i *)src_2);
+
+	vcmp = _mm_cmpeq_epi16(xmm0, xmm1);
+	vmask = _mm_movemask_epi8(vcmp);
+	return (!(vmask == 0xffffU));
+}
+
+/**
+ * Compare 32 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp32(const uint8_t *src_1, const uint8_t *src_2)
+{
+	bool ret;
+
+	ret = rte_cmp16(src_1 + 0 * 16, src_2 + 0 * 16);
+
+	if (likely(ret == 0))
+		ret = rte_cmp16(src_1 + 1 * 16, src_2 + 1 * 16);
+
+	return ret;
+}
+
+/**
+ * Compare 64 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp64(const uint8_t *src_1, const uint8_t *src_2)
+{
+	bool ret;
+
+	ret = rte_cmp16(src_1 + 0 * 16, src_2 + 0 * 16);
+
+	if (likely(ret == 0))
+		ret = rte_cmp16(src_1 + 1 * 16, src_2 + 1 * 16);
+
+	if (likely(ret == 0))
+		ret = rte_cmp16(src_1 + 2 * 16, src_2 + 2 * 16);
+
+	if (likely(ret == 0))
+		ret = rte_cmp16(src_1 + 3 * 16, src_2 + 3 * 16);
+
+	return ret;
+}
+
+/**
+ * Compare 128 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline bool
+rte_cmp128(const uint8_t *src_1, const uint8_t *src_2)
+{
+	bool ret;
+
+	ret = rte_cmp64(src_1 + 0 * 64, src_2 + 0 * 64);
+
+	if (likely(ret == 0))
+		ret = rte_cmp64(src_1 + 1 * 64, src_2 + 1 * 64);
+
+	return ret;
+}
+
+static inline bool
+rte_memcmp_remainder(const void *_src_1, const void *_src_2, size_t n)
+{
+	uintptr_t src_1u = (uintptr_t)_src_1;
+	uintptr_t src_2u = (uintptr_t)_src_2;
+
+	bool ret_1 = 1, ret_2 = 1, ret_4 = 1, ret_8 = 1;
+
+	/**
+	 * Compare less than 16 bytes
+	 */
+	if (n & 0x01) {
+		ret_1 = (*(uint8_t *)src_1u ==
+				*(const uint8_t *)src_2u);
+		src_1u = (uintptr_t)((const uint8_t *)src_1u + 1);
+		src_2u = (uintptr_t)((const uint8_t *)src_2u + 1);
+	}
+	if (n & 0x02) {
+		ret_2 = (*(uint16_t *)src_1u ==
+				*(const uint16_t *)src_2u);
+		src_1u = (uintptr_t)((const uint16_t *)src_1u + 1);
+		src_2u = (uintptr_t)((const uint16_t *)src_2u + 1);
+	}
+	if (n & 0x04) {
+		ret_4 = (*(uint32_t *)src_1u ==
+				*(const uint32_t *)src_2u);
+		src_1u = (uintptr_t)((const uint32_t *)src_1u + 1);
+		src_2u = (uintptr_t)((const uint32_t *)src_2u + 1);
+	}
+	if (n & 0x08) {
+		ret_8 = (*(uint64_t *)src_1u ==
+				*(const uint64_t *)src_2u);
+	}
+	return (!(ret_1 && ret_2 && ret_4 && ret_8));
+}
+
+static inline bool
+rte_memcmp(const void *_src_1, const void *_src_2, size_t n)
+{
+	const uint8_t *src_1 = (const uint8_t *)_src_1;
+	const uint8_t *src_2 = (const uint8_t *)_src_2;
+	bool ret;
+
+	/**
+	 * Compare less than 16 bytes
+	 */
+	if (n < 16)
+		return rte_memcmp_remainder(_src_1, _src_2, n);
+
+	/**
+	 * Fast way when compare size exceeds 16 bytes
+	 */
+	if (n <= 32) {
+		if (likely(n & 0x20))
+			ret = rte_cmp32(src_1, src_2);
+		else {
+			ret = rte_cmp16(src_1 - 16 + n, src_2 - 16 + n);
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 16 + n,
+						src_2 - 16 + n, n - 16);
+		}
+		return ret;
+	}
+
+	if (n <= 48) {
+		if (likely(n & 0x30)) {
+			ret = rte_cmp32(src_1, src_2);
+			if (likely(ret == 0))
+				ret = rte_cmp16(src_1 - 32 + n, src_2 - 32 + n);
+		} else {
+			ret = rte_cmp32(src_1, src_2);
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 32 + n,
+						src_2 - 32 + n, n - 32);
+		}
+		return ret;
+	}
+
+	if (n <= 64) {
+		if (likely(n & 0x40))
+			ret = rte_cmp64(src_1, src_2);
+		else {
+			ret = rte_cmp32(src_1 - 32 + n, src_2 - 32 + n);
+			if (likely(ret == 0))
+				ret = rte_cmp16(src_1 - 32 + n,
+						src_2 - 32 + n);
+
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 48 + n,
+						src_2 - 48 + n, n - 48);
+		}
+		return ret;
+	}
+
+	if (n <= 128) {
+		if (likely(n & 0x80))
+			ret = rte_cmp128(src_1, src_2);
+		else {
+			ret = rte_cmp64(src_1, src_2);
+			if (likely(ret == 0))
+				ret = rte_cmp32(src_1 - 64 + n, src_2 - 64 + n);
+
+			if (likely(ret == 0))
+				ret = rte_cmp16(src_1 - 96 + n, src_2 - 96 + n);
+
+			if (likely(ret == 0))
+				ret = rte_memcmp_remainder(src_1 - 112 + n,
+						src_2 - 112 + n, n - 112);
+		}
+		return ret;
+	}
+
+
+	return 0;
+}
+
+#endif /* RTE_MACHINE_CPUFLAG_AVX2 */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _RTE_MEMCMP_X86_64_H_ */

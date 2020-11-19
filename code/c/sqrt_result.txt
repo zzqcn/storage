@@ -1,0 +1,124 @@
+simd_sqrt execution result on
+Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+
+Normal
+-----------
+Execution time = 82719.928 ms
+Result[0] = 1.000000
+Result[1] = 0.707107
+Result[2] = 0.577350
+Result[3] = 0.500000
+Result[4] = 0.447214
+Result[5] = 0.408248
+Result[6] = 0.377964
+Result[7] = 0.353553
+Result[8] = 0.333333
+Result[9] = 0.316228
+Result[10] = 0.301511
+Result[11] = 0.288675
+Result[12] = 0.277350
+Result[13] = 0.267261
+Result[14] = 0.258199
+Result[15] = 0.250000
+Result[16] = 0.242536
+Result[17] = 0.235702
+Result[18] = 0.229416
+Result[19] = 0.223607
+
+Normal icc
+----------
+Execution time = 28275.837 ms
+Result[0] = 1.000000
+Result[1] = 0.707107
+Result[2] = 0.577350
+Result[3] = 0.500000
+Result[4] = 0.447214
+Result[5] = 0.408248
+Result[6] = 0.377964
+Result[7] = 0.353553
+Result[8] = 0.333333
+Result[9] = 0.316228
+Result[10] = 0.301511
+Result[11] = 0.288675
+Result[12] = 0.277350
+Result[13] = 0.267261
+Result[14] = 0.258199
+Result[15] = 0.250000
+Result[16] = 0.242536
+Result[17] = 0.235702
+Result[18] = 0.229416
+Result[19] = 0.223607
+
+
+SSE_division
+---------------
+Execution time = 7265.020 ms
+Result[0] = 1.000000
+Result[1] = 0.707107
+Result[2] = 0.577350
+Result[3] = 0.500000
+Result[4] = 0.447214
+Result[5] = 0.408248
+Result[6] = 0.377964
+Result[7] = 0.353553
+Result[8] = 0.333333
+Result[9] = 0.316228
+Result[10] = 0.301511
+Result[11] = 0.288675
+Result[12] = 0.277350
+Result[13] = 0.267261
+Result[14] = 0.258199
+Result[15] = 0.250000
+Result[16] = 0.242536
+Result[17] = 0.235702
+Result[18] = 0.229416
+
+SSE_recip
+---------------
+Execution time = 3575.948 ms
+Result[0] = 0.999756
+Result[1] = 0.706934
+Result[2] = 0.577209
+Result[3] = 0.499878
+Result[4] = 0.447104
+Result[5] = 0.408149
+Result[6] = 0.377872
+Result[7] = 0.353467
+Result[8] = 0.333252
+Result[9] = 0.316151
+Result[10] = 0.301470
+Result[11] = 0.288605
+Result[12] = 0.277282
+Result[13] = 0.267196
+Result[14] = 0.258136
+Result[15] = 0.249939
+Result[16] = 0.242469
+Result[17] = 0.235645
+Result[18] = 0.229365
+Result[19] = 0.223552
+
+SSE_recip icc
+----------------
+Execution time = 3529.519 ms
+Result[0] = 0.999756
+Result[1] = 0.706934
+Result[2] = 0.577209
+Result[3] = 0.499878
+Result[4] = 0.447104
+Result[5] = 0.408149
+Result[6] = 0.377872
+Result[7] = 0.353467
+Result[8] = 0.333252
+Result[9] = 0.316151
+Result[10] = 0.301470
+Result[11] = 0.288605
+Result[12] = 0.277282
+Result[13] = 0.267196
+Result[14] = 0.258136
+Result[15] = 0.249939
+Result[16] = 0.242469
+Result[17] = 0.235645
+Result[18] = 0.229365
+Result[19] = 0.223552
+
+

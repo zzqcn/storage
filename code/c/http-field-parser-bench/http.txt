@@ -1,0 +1,12 @@
+GET /passApi/js/uni_login_wrapper.js?cdnversion=1422339739259&_=1422339739082 HTTP/1.1
+Accept: application/javascript, */*;q=0.8
+Referer: http://www.baidu.com/
+Accept-Language: zh-CN
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Host: passport.baidu.com
+DNT: 1
+Connection: Keep-Alive
+Cookie: BAIDUID=95E768032D60B19FD28492AB8B3D0D68:FG=1; BAIDUPSID=95E768032D60B19FD28492AB8B3D0D68; H_PS_PSSID=11198_11209_1443_11226_11071_11101_11276_11240_11150_11294_11242_10618
+
+
