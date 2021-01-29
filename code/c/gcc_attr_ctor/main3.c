@@ -16,7 +16,7 @@ int main(void)
 #endif
     f = dlsym(h, "foo_api");
     f();
-    printf("hello in main2\n");
+    printf("hello in main3\n");
     dlclose(h);
 
     return 0;

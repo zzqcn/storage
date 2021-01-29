@@ -6,6 +6,5 @@ foolib = shared_library('foo',
 
 demo = executable('main5',
     'main3.c',
-    link_with: foolib,
     link_args: '-ldl'
 )
