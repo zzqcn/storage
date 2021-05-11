@@ -1,0 +1,2 @@
+option('desc', type: 'string', value: 'my meson project')
+option('id', type: 'integer', value: 123)

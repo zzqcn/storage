@@ -1,2 +1,2 @@
-project('shared library', 'c')
+project('library', 'c')
 library('mylib', 'main.c')

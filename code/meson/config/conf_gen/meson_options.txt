@@ -1,0 +1,2 @@
+option('max_threads', type: 'integer', value: 8)
+option('with_dpdk', type: 'boolean', value: false)
