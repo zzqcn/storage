@@ -1,0 +1,6 @@
+option('docs', type: 'boolean', value: false)
+option('enable_XXX', type: 'boolean', value: false)
+option('examples', type: 'boolean', value: false)
+option('machine', type: 'string', value: 'native',
+	description: 'set the target machine type')
+option('tests', type: 'boolean', value: false)
