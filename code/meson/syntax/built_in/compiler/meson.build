@@ -1,3 +1,5 @@
+project('compiler', 'c')
+
 cc = meson.get_compiler('c')
 
 message('compiler.get_id():' + cc.get_id())
@@ -20,3 +22,4 @@ code = '''
 message('compiler.compiles(code):' + cc.compiles(code).to_string())
 message('compiler.links(code):' + cc.links(code).to_string())
 message('compiler.run(code):' + cc.run(code).returncode().to_string())
+
