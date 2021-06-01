@@ -1,5 +1,3 @@
-project('compiler', 'c')
-
 cc = meson.get_compiler('c')
 
 message('compiler.get_id():' + cc.get_id())
