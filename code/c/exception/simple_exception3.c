@@ -72,9 +72,9 @@ int main(int argc, char** argv)
     // }
     FINALLY {
         printf("finally\n");
-        // if (HAS_EXCEPTION) {
-        printf("has exception: %d(%s)\n", EXCEPTION_VAL, EXCEPTION_STR);
-        // }
+        if (HAS_EXCEPTION) {
+            printf("has exception: %d(%s)\n", EXCEPTION_VAL, EXCEPTION_STR);
+        }
     }
     ENDTRY;
 

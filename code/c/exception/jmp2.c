@@ -20,18 +20,13 @@ double divide(double to, double by)
     return to / by;
 }
 
-void f()
+int main(int argc, char** argv)
 {
     if (setjmp(env) == 0)
         divide(2, 0);
     else
         printf("Cannot / 0\n");
     printf("done\n");
-}
-
-int main(int argc, char** argv)
-{
-    f();
 
     return 0;
 }
