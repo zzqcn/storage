@@ -1,5 +1,11 @@
 project('c_exception', 'c')
 
+cc = meson.get_compiler('c')
+
+if cc.get_id() == 'msvc'
+    add_project_arguments(cc.get_supported_arguments(['/utf-8']), language: 'c')
+endif
+
 executable('jmp', 'jmp.c')
 executable('jmp2', 'jmp2.c')
 executable('jmp3', 'jmp3.c')
