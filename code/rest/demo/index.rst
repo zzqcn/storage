@@ -11,6 +11,7 @@ Welcome to demo's documentation!
    :caption: Contents:
 
    syntax
+   article/index
 
 
 
