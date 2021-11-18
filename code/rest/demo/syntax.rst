@@ -64,6 +64,12 @@ This text has returned to the indentation of the first paragraph,
 is outside of the literal block, and is therefore treated as an
 ordinary paragraph.
 
+
+Sherlock Holmes::
+
+    "It is my business to know things.  That is my trade."
+
+
 引用文字块
 ^^^^^^^^^^^^
 
@@ -88,10 +94,34 @@ A transition should not begin or end a
 section or document, nor should two
 transitions be immediately adjacent.
 
+............
+
+A transition should not begin or end a
+section or document, nor should two
+transitions be immediately adjacent.
+
 行内标记
 ----------
 
-XXX **加粗** XXX *斜体* XXX ``行内代码`` XXX
+加粗
+^^^^^^
+
+XXX **加粗** XXX
+
+斜体
+^^^^^^^
+
+XXX *斜体* XXX
+
+上下标
+^^^^^^^
+
+| H\ :sub:`2`\ O
+| E = mc\ :sup:`2`
+
+行内代码
+^^^^^^^^^^^
+XXX ``行内代码`` XXX
 
 .. _target:
 
@@ -321,3 +351,51 @@ code-block
 
    Still in the comment.
 
+文本替换
+---------
+
+.. |reST| replace:: reStructuredText
+
+Yes, |reST| is a long word, so I can't blame anyone for wanting to
+abbreviate it.
+
+
+侧边栏
+----------
+
+.. sidebar:: Optional Sidebar Title
+   :subtitle: Optional Sidebar Subtitle
+
+   Subsequent indented lines comprise
+   the body of the sidebar, and are
+   interpreted as body elements.
+
+脚注
+-------
+
+orem ipsum [#f1]_ dolor sit amet ... [#f2]_
+
+
+引文
+-------
+
+It is methioned by [Ref]_ that C++ is good.
+
+交叉引用
+-----------
+
+引用故乡第二章 :ref:`guxiang-chapter2` .
+
+引用文档背影: :doc:`article/beiying` .
+
+--------
+
+
+.. rubric:: 脚注
+
+.. [#f1] Text of the first footnote.
+.. [#f2] Text of the second footnote.
+
+.. rubric:: 引文
+
+.. [Ref] 《zzq's talk》
