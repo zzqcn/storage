@@ -12,11 +12,20 @@ add_project_arguments(
 
 libpb = dependency('protobuf', required: true)
 libpbc = dependency('libprotobuf-c', required: true)
+libpb2json = declare_dependency(
+    include_directories: [
+        '/usr/local/include',
+    ],
+    link_args: [
+        '-L/usr/local/lib',
+        '-lprotobuf2json-c',
+    ]
+)
 
 executable('hellocpp', 'hello.cpp', 'hello.pb.cc',
   dependencies: [libpb]
 )
 
 executable('helloc', 'hello.c', 'hello.pb-c.c',
-  dependencies: [libpbc]
+  dependencies: [libpbc, libpb2json]
 )
