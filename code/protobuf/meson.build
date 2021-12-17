@@ -21,11 +21,8 @@ libpb2json = declare_dependency(
         '-lprotobuf2json-c',
     ]
 )
+libzmq = dependency('libzmq', required: true)
 
-executable('hellocpp', 'hello.cpp', 'hello.pb.cc',
-  dependencies: [libpb]
-)
 
-executable('helloc', 'hello.c', 'hello.pb-c.c',
-  dependencies: [libpbc, libpb2json]
-)
+subdir('hello')
+subdir('rpc')

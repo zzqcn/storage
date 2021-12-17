@@ -33,7 +33,7 @@ void deserialize(uint8_t *buf, size_t buf_len) {
 
 void with_json() {
   int ret;
-  Hello__HelloRequest req;
+  Hello__HelloRequest req, *req2;
   // size_t len;
   // uint8_t *buf;
   char *json_str;
@@ -42,11 +42,20 @@ void with_json() {
   req.value = 123;
   req.msg = "Hello";
 
-  // len = hello__hello_request__get_packed_size(&req);
-  // buf = malloc(len);
-  // hello__hello_request__pack(&req, buf);
   ret = protobuf2json_string(&req.base, TEST_JSON_FLAGS, &json_str, NULL, 0);
+  assert(ret == 0);
   printf("to JSON: %s\n", json_str);
+
+  ProtobufCMessage *msg = NULL;
+  char error_string[256] = {0};
+  ret = json2protobuf_string(json_str, 0, &hello__hello_request__descriptor, &msg, error_string,
+                             sizeof(error_string));
+  assert(ret == 0);
+  req2 = (Hello__HelloRequest *)msg;
+  printf("from JSON: %d, %s\n", req2->value, req2->msg);
+
+  free(json_str);
+  free(req2);
 }
 
 int main(int argc, char **argv) {
