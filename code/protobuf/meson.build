@@ -26,3 +26,4 @@ libzmq = dependency('libzmq', required: true)
 
 subdir('hello')
 subdir('rpc')
+subdir('rpc2')
