@@ -23,7 +23,7 @@ void deserialize(uint8_t *buf, size_t buf_len) {
   Hello__HelloRequest *req;
 
   req = hello__hello_request__unpack(NULL, buf_len, buf);
-  printf("req: %d, %s\n", req->value, req->msg);
+  printf("deserialize: %d, %s\n", req->value, req->msg);
   hello__hello_request__free_unpacked(req, NULL);
   free(buf);
 }
