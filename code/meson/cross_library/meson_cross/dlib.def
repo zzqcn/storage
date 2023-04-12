@@ -1,0 +1,3 @@
+LIBRARY dlib
+EXPORTS
+  dlib_func
