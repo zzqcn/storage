@@ -3,7 +3,6 @@
 namespace cpp1x2x {
 
 class unit_type : public code_unit {
-  std::string name = "Type";
   int init(void);
   void fini(void);
   int run(void);

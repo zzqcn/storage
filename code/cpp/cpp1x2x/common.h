@@ -22,7 +22,6 @@
 namespace cpp1x2x {
 
 struct code_unit {
-  std::string name;
   virtual int init(void) = 0;
   virtual void fini(void) = 0;
   virtual int run(void) = 0;
