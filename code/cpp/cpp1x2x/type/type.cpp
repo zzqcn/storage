@@ -25,9 +25,11 @@ int unit_type::run() {
   return 0;
 }
 
-INITIALIZER(reg_type) {
-  unit_type *u = new unit_type;
-  code_unit_add(u);
-}
+// INITIALIZER(reg_type) {
+//   unit_type *u = new unit_type;
+//   code_unit_add(u);
+// }
+
+code_unit_register type_reg(new unit_type);
 
 } // namespace cpp1x2x
