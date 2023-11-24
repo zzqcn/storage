@@ -1,19 +1,16 @@
 #include "common.h"
 
-#include <iostream>
-
-namespace cpp1x2x {} // namespace cpp1x2x
-
 int main(int argc, char **argv) {
-  std::cout << "CPU: " << CPU_NAME << std::endl;
-  std::cout << "HOST: " << HOST_NAME << std::endl;
-  std::cout << "TOOLCHAIN: " << TOOLCHAIN_NAME << std::endl;
-  std::cout << "Hello Modern C++!" << std::endl;
+  std::cout << "Host CPU: " << CPU_NAME << std::endl;
+  std::cout << "Host System: " << SYSTEM_NAME << std::endl;
+  std::cout << "C++ Compiler: " << CXX_NAME << std::endl;
+  std::cout << "C++ Standard: " << CPP_STD_NAME << std::endl;
 
   cpp1x2x::unit_vector &v = cpp1x2x::code_unit_manager::get_units();
 
   std::cout << "code units: " << v.size() << std::endl;
   for (cpp1x2x::unit_vector::iterator it = v.begin(); it != v.end(); ++it) {
+    std::cout << "\n===" << (*it)->name() << "===\n";
     (*it)->init();
     (*it)->run();
     (*it)->fini();

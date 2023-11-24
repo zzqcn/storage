@@ -14,20 +14,23 @@ if not supported_oss.contains(host_os_name)
     error('unsupported System type @0@'.format(host_os_name))
 endif
 conf.set(host_os_name.to_upper(), 1)
-conf.set_quoted('HOST_NAME', host_os_name)
+conf.set_quoted('SYSTEM_NAME', host_os_name)
 
 # 编译器
-toolchain = cxx.get_id()
+cxx_name = cxx.get_id()
 supported_cxxs = ['gcc', 'clang', 'msvc']
-if not supported_cxxs.contains(toolchain)
-    error('unsupported Toolchain type @0@'.format(toolchain))
+if not supported_cxxs.contains(cxx_name)
+    error('unsupported C++ Compiler type @0@'.format(cxx_name))
 endif
-conf.set(toolchain.to_upper(), 1)
-conf.set('TOOLCHAIN_NAME', '"@0@ @1@"'.format(toolchain, cxx.version()))
+conf.set(cxx_name.to_upper(), 1)
+conf.set('CXX_NAME', '"@0@ @1@"'.format(cxx_name, cxx.version()))
 
+# C++标准
+cpp_std_name = get_option('cpp_std')
+conf.set_quoted('CPP_STD_NAME', cpp_std_name)
 
 # add -include config.h to cflags
-if toolchain != 'msvc'
+if cxx_name != 'msvc'
     add_project_arguments('-include', 'config.h', language: 'cpp')
 else
     add_project_arguments('/FI', 'config.h', language: 'cpp')

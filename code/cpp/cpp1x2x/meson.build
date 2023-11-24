@@ -1,5 +1,8 @@
 project('cpp1x2x', 'cpp',
     version : '0.1',
+    default_options: [
+        'cpp_std=c++20',
+    ],
 )
 
 # 变量声明
@@ -24,10 +27,9 @@ includes += include_directories(
     '.'
 )
 
-subdir('type')
-
 sources += files(
     'cpp1x2x.cpp',
+    'type.cpp',
 )
 
 executable('cpp1x2x', sources,
