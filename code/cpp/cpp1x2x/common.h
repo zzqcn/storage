@@ -8,6 +8,13 @@
 #include <limits>
 #include <string>
 #include <vector>
+#include <list>
+#include <stack>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <functional>
+#include <algorithm>
 
 namespace cpp1x2x {
 

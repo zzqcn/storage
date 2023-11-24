@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
   cpp1x2x::unit_vector &v = cpp1x2x::code_unit_manager::get_units();
 
   std::cout << "code units: " << v.size() << std::endl;
-  for (cpp1x2x::unit_vector::iterator it = v.begin(); it != v.end(); ++it) {
+  for (auto it = v.begin(); it != v.end(); ++it) {
     std::cout << "\n===" << (*it)->name() << "===\n";
     (*it)->init();
     (*it)->run();

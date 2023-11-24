@@ -31,6 +31,8 @@ sources += files(
     'cpp1x2x.cpp',
     'type.cpp',
     'namespace.cpp',
+    'auto.cpp',
+    'decltype.cpp',
 )
 
 executable('cpp1x2x', sources,
