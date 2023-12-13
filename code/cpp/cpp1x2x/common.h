@@ -2,21 +2,28 @@
 
 #include "config.h"
 
+#include <algorithm>
 #include <climits>
 #include <cstdio>
+#include <functional>
 #include <iostream>
 #include <limits>
-#include <string>
-#include <vector>
 #include <list>
-#include <stack>
-#include <set>
 #include <map>
+#include <set>
+#include <stack>
+#include <string>
 #include <unordered_map>
-#include <functional>
-#include <algorithm>
+#include <vector>
+
+#include <boost/type_index.hpp>
 
 namespace cpp1x2x {
+
+// https://www.boost.org/doc/libs/master/doc/html/boost_typeindex_header_reference.html#header.boost.type_index_hpp
+template <typename T> std::string type_name() {
+  return boost::typeindex::type_id_with_cvr<T>().pretty_name();
+}
 
 class code_unit {
 public:

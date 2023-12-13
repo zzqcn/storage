@@ -29,6 +29,10 @@ conf.set('CXX_NAME', '"@0@ @1@"'.format(cxx_name, cxx.version()))
 cpp_std_name = get_option('cpp_std')
 conf.set_quoted('CPP_STD_NAME', cpp_std_name)
 
+# Boost库
+boost_version = boost.version()
+conf.set_quoted('BOOST_VERSION', boost_version)
+
 # add -include config.h to cflags
 if cxx_name != 'msvc'
     add_project_arguments('-include', 'config.h', language: 'cpp')

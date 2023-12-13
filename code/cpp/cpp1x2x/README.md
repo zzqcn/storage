@@ -2,6 +2,7 @@
 
 结合《现代C++语言核心特性解析》(谢丙堃, 2021.10)一书学习 C++ 1x/2x 新特性的示例代码. 另外还参考了:
 
+- 《学习C++20》(Paul J. Deitel等, 2023.06)
 - 《高速上手C++11/14》(欧长坤, 非出版物, 电子书)
 - Snort 3 源代码
 
@@ -19,7 +20,10 @@
 
 # 编译运行
 
-代码使用 meson 编译系统, 默认使用 ninja 做为 backend. C++ 标准为 C++20.
+代码使用 meson 编译系统, 默认使用 ninja 做为 backend. C++ 标准设置为 C++20.
+
+为了在各平台正确输出推导类型等, 使用了 Boost 库. 在 Windows 平台, 可设置环境变量让 meson 找到 Boost 依赖库,
+方法是 `set BOOST_ROOT=<Boost库解压位置>` (临时) 或 `setx BOOST_ROOT <Boost库解压位置>` (永久). 其他平台类似, 从略.
 
 编译运行:
 ```bash
@@ -27,6 +31,6 @@ $ cd <cpp1x2x root>
 $ meson setup <builddir>
 $ cd <builddir>
 $ ninja
-$ ./cpp1x2x # 或 cpp1x2x.exe
+$ ./cpp1x2x # 或 cpp1x2x.exe (on Windows)
 ```
 

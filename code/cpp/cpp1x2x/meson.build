@@ -5,6 +5,9 @@ project('cpp1x2x', 'cpp',
     ],
 )
 
+# https://mesonbuild.com/Dependencies.html#boost
+boost = dependency('boost', required: true)
+
 # 变量声明
 cxx = meson.get_compiler('cpp')
 conf = configuration_data()
@@ -33,12 +36,14 @@ sources += files(
     'namespace.cpp',
     'auto.cpp',
     'decltype.cpp',
+    'ret_behind.cpp',
+    'rvref.cpp',
 )
 
 executable('cpp1x2x', sources,
     include_directories: includes,
     # cpp_args: cpp_args,
-    # dependencies: deps,
+    dependencies: [boost],
     # link_with: libs,
     # link_args: link_args,
 )
