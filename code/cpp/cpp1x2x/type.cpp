@@ -50,7 +50,8 @@ int unit_type::run() {
   char8_t utf8c_20 = u8'8';
   char16_t utf16c = u'好';
   char32_t utf32c = U'好';
-  char utf8_arr[] = u8"你好世界"; // C++20 msvc19有警告但可以编译成功
+  // clang: ISO C++20 does not permit initialization of char array with UTF-8 string literal
+  // char utf8_arr[] = u8"你好世界"; // C++20 msvc19有警告但可以编译成功
   char8_t utf8_20_arr[] = u8"你好世界";
   char16_t utf16_arr[] = u"你好世界";
   char32_t utf32_arr[] = U"你好世界";
@@ -60,7 +61,7 @@ int unit_type::run() {
   std::cout << setlocale(LC_ALL, NULL) << std::endl;
   std::cout << "sizeof char/char8_t/char16_t/char32_t: " << sizeof(char) << '/' << sizeof(char8_t)
             << '/' << sizeof(char16_t) << '/' << sizeof(char32_t) << std::endl;
-  std::cout << "utf8_arr/size: " << utf8_arr << '/' << sizeof(utf8_arr) << std::endl;
+  // std::cout << "utf8_arr/size: " << utf8_arr << '/' << sizeof(utf8_arr) << std::endl;
   std::cout << "utf8_20_arr size: " << sizeof(utf8_20_arr) << std::endl;
   std::cout << "utf16_arr size: " << sizeof(utf16_arr) << std::endl;
   std::cout << "utf32_arr size: " << sizeof(utf32_arr) << std::endl;

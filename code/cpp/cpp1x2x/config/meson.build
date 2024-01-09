@@ -31,7 +31,7 @@ conf.set_quoted('CPP_STD_NAME', cpp_std_name)
 
 # Boost库
 boost_version = boost.version()
-conf.set_quoted('BOOST_VERSION', boost_version)
+conf.set_quoted('DEP_BOOST_VERSION', boost_version)
 
 # add -include config.h to cflags
 if cxx_name != 'msvc'
