@@ -36,6 +36,10 @@ conf.set_quoted('DEP_BOOST_VERSION', boost_version)
 # add -include config.h to cflags
 if cxx_name != 'msvc'
     add_project_arguments('-include', 'config.h', language: 'cpp')
+    # 对于clang 15, 开启std::views支持
+    if cxx_name == 'clang'
+        add_project_arguments('-fexperimental-library', language: 'cpp')
+    endif
 else
     add_project_arguments('/FI', 'config.h', language: 'cpp')
 endif

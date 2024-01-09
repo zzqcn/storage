@@ -38,6 +38,7 @@ sources += files(
     'decltype.cpp',
     'ret_behind.cpp',
     'rvref.cpp',
+    'range.cpp',
 )
 
 executable('cpp1x2x', sources,

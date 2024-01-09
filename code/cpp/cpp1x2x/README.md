@@ -14,7 +14,7 @@
 
 - Windows 11, Visual Studio 2022, Intel i5-12400, 组装物理机
 - Linux (Ubuntu 20.04), GCC 9.4.0, Intel Xeon Platinum 8163, 阿里云主机
-- macOS Sonoma (14.2.1), clang 14.0.0, Apple M1 Pro 芯片, MacBook Pro
+- macOS Sonoma (14.2.1), clang 15.0.0, Apple M1 Pro 芯片, MacBook Pro
 
 所有代码都至少在这三种环境中编译运行通过.
 
