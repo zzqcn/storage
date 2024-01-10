@@ -31,15 +31,17 @@ includes += include_directories(
 )
 
 sources += files(
-    'cpp1x2x.cpp',
-    'type.cpp',
-    'namespace.cpp',
     'auto.cpp',
+    'cpp1x2x.cpp',
     'decltype.cpp',
+    'namespace.cpp',
+    'range.cpp',
+    'regex.cpp',
     'ret_behind.cpp',
     'rvref.cpp',
-    'range.cpp',
     'span.cpp',
+    'string_view.cpp',
+    'type.cpp',
 )
 
 executable('cpp1x2x', sources,

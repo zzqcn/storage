@@ -60,6 +60,8 @@ int unit_span::run() {
   std::cout << "\nmiddle 3 items: ";
   display_span(sp.subspan(1, 3));
 
+  std::cout << std::endl;
+
   return 0;
 }
 
