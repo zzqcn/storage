@@ -35,7 +35,10 @@ conf.set_quoted('BOOST_VERSION', boost_version)
 
 # add -include config.h to cflags
 if cxx_name != 'msvc'
+    add_project_arguments('-fno-elide-constructors', language: 'cpp')
     add_project_arguments('-include', 'config.h', language: 'cpp')
 else
+    # 关闭named return value optimization优化(NRVO)
+    add_project_arguments('/Zc:nrvo-', language: 'cpp')
     add_project_arguments('/FI', 'config.h', language: 'cpp')
 endif
