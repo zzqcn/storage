@@ -31,12 +31,16 @@ conf.set_quoted('CPP_STD_NAME', cpp_std_name)
 
 # Boost库
 boost_version = boost.version()
-conf.set_quoted('BOOST_VERSION', boost_version)
+conf.set_quoted('DEP_BOOST_VERSION', boost_version)
 
 # add -include config.h to cflags
 if cxx_name != 'msvc'
     add_project_arguments('-fno-elide-constructors', language: 'cpp')
     add_project_arguments('-include', 'config.h', language: 'cpp')
+    # 对于clang 15, 开启std::views支持
+    if cxx_name == 'clang'
+        add_project_arguments('-fexperimental-library', language: 'cpp')
+    endif
 else
     # 关闭named return value optimization优化(NRVO)
     add_project_arguments('/Zc:nrvo-', language: 'cpp')

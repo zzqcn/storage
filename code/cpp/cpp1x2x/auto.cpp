@@ -25,7 +25,7 @@ auto foo(int a, int b) {
   return a + b;
 }
 
-// auto修饰非类型模块形参
+// auto修饰非类型模板形参
 template <auto n> void ft(void) {
   std::cout << "ft: " << n << std::endl;
 }
@@ -70,7 +70,8 @@ int unit_auto::run() {
 
   ft<5>();
   ft<'x'>();
-  ft<5.0f>(); // 按理会编译失败, 但用msvc编译成功
+  // clang: no matching function for call to 'ft'
+  // ft<5.0f>(); // 按理会编译失败, 但用msvc编译成功
 
   return 0;
 }
