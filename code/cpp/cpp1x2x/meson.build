@@ -39,6 +39,7 @@ sources += files(
     'ret_behind.cpp',
     'rvref.cpp',
     'range.cpp',
+    'span.cpp',
 )
 
 executable('cpp1x2x', sources,

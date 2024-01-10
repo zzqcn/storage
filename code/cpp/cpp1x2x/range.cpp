@@ -1,7 +1,6 @@
 #include "common.h"
 
 #include <ranges>
-// #include <numeric>
 
 namespace cpp1x2x {
 
@@ -25,18 +24,22 @@ void unit_range::fini() {
 }
 
 int unit_range::run() {
-  auto show_values{
-    [](auto& values, const std::string& message) {
-      std::cout << message << ": ";
-      for(const auto& val: values) {
-        std::cout << val << " ";
-      }
-      std::cout << std::endl;
+  auto show_values{[](auto &values, const std::string &message) {
+    std::cout << message << ": ";
+    for (const auto &val : values) {
+      std::cout << val << " ";
     }
-  };
+    std::cout << std::endl;
+  }};
 
   auto values1{std::views::iota(1, 11)};
   show_values(values1, "Generate integers 1-10");
+
+  auto values2{values1 | std::views::filter([](const auto &x) { return x % 2 == 0; })};
+  show_values(values2, "Filtering even integers");
+
+  auto values3{values2 | std::views::transform([](const auto &x) { return x * x; })};
+  show_values(values3, "Mapping even integers to squares");
 
   return 0;
 }

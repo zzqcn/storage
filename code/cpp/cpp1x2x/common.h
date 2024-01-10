@@ -2,19 +2,20 @@
 
 #include "config.h"
 
-#include <algorithm>
 #include <climits>
-#include <cstdio>
-#include <functional>
-#include <iostream>
 #include <limits>
-#include <list>
-#include <map>
-#include <set>
-#include <stack>
+#include <cstdio>
+#include <iostream>
 #include <string>
-#include <unordered_map>
+#include <array>
 #include <vector>
+#include <list>
+#include <stack>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <algorithm>
+#include <functional>
 
 #include <boost/type_index.hpp>
 

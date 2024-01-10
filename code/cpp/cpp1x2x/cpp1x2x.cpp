@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
   std::cout << "Host system: " << SYSTEM_NAME << std::endl;
   std::cout << "C++ compiler: " << CXX_NAME << std::endl;
   std::cout << "C++ standard: " << CPP_STD_NAME << std::endl;
-  std::cout << "Boost version: " << BOOST_VERSION << std::endl;
+  std::cout << "Boost version: " << DEP_BOOST_VERSION << std::endl;
 
   cpp1x2x::unit_vector &v = cpp1x2x::code_unit_manager::get_units();
 
