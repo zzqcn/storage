@@ -1,6 +1,5 @@
 #include "common.h"
 
-#include <iomanip>
 #include <regex>
 
 namespace cpp1x2x {

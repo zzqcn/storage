@@ -44,6 +44,8 @@ sources += files(
     'type.cpp',
 )
 
+subdir('variant_visit')
+
 executable('cpp1x2x', sources,
     include_directories: includes,
     # cpp_args: cpp_args,
