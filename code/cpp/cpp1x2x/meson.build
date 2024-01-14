@@ -44,7 +44,9 @@ sources += files(
     'type.cpp',
 )
 
+subdir('smart_pointer')
 subdir('variant_visit')
+subdir('template')
 
 executable('cpp1x2x', sources,
     include_directories: includes,
