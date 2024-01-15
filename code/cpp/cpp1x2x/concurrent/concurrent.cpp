@@ -23,6 +23,7 @@ void unit_concur::fini() {
 
 int unit_concur::run() {
   profiling_run();
+  print_task_run();
 
   return 0;
 }
