@@ -31,22 +31,23 @@ includes += include_directories(
 )
 
 sources += files(
-    'auto.cpp',
-    'cpp1x2x.cpp',
+    'type.cpp',
     'decltype.cpp',
+    'auto.cpp',
+    'rvref.cpp',
+    'ret_behind.cpp',
     'namespace.cpp',
     'range.cpp',
-    'regex.cpp',
-    'ret_behind.cpp',
-    'rvref.cpp',
     'span.cpp',
     'string_view.cpp',
-    'type.cpp',
+    'regex.cpp',
+    'cpp1x2x.cpp',
 )
 
 subdir('smart_pointer')
 subdir('variant_visit')
 subdir('template')
+subdir('concurrent')
 
 executable('cpp1x2x', sources,
     include_directories: includes,
